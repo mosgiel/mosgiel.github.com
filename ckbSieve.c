@@ -3,15 +3,17 @@
 #include <math.h>
 
 ///Variable Declaration
-int factorLimit = 100000;
+int factorLimit = 1000;
 int cycle;
 int offset = -1;
+int base = 3;
+int konstant = 2;
 
 int detectCycleOffset(int x) {
     int m = 1;
     for (int i = 0; i <= x; ++i) {
-        m = (3 * m) % x;
-        if (m + 2 == x) {
+        m = (base * m) % x;
+        if (m + konstant == x) {
             offset = i + 1;
         }
         if (m == 1) {
@@ -22,6 +24,7 @@ int detectCycleOffset(int x) {
 }
 
 bool checkPrime(int x) {
+
     float y = x;
     for (int i = 2; i <= sqrt(y); ++i) {
         if (x % i == 0) {
@@ -42,8 +45,8 @@ int main(void) {
     while (i < factorLimit) {
         if (checkPrime(k) == true) {
             detectCycleOffset(k);
-            printf("(%d, %d)", cycle, offset);
-            fprintf(fp, "(%d, %d)", cycle, offset);
+            printf("(%d, %d) ", cycle, offset);
+            fprintf(fp, "(%d, %d) ", cycle, offset);
         }
         cycle = 0;
         offset = -1;
@@ -52,3 +55,4 @@ int main(void) {
     }
     return 0;
 }
+
