@@ -1,0 +1,76 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css">
+		<title>Mosgiel's BNK Sieve</title>
+	</head>
+	<body>
+		<h1>Mosgiel's b<sup>n</sup>+k Sieve Assistor</h1>
+		<form id="vIn">
+			Base (b): <input type="number" id="bIn" name="bIn" min="2"><br>
+			Constant (k): <input type="number" id="kIn" name="kIn" min="1"><br>
+			Maximum Factor: <input type="number" id="maxFIn" name="maxFIn" min="0"><br>
+		</form>
+		<button onclick="calc()">Start</button>
+		<p id="t_cycle"></p>
+		<p id="t_offset"></p>
+		<script>
+			var x = 0;
+			var b = 0;
+			var k = 0;
+			var minF = 0;
+			var maxF = 0;
+			var cycle = 0;
+			var offset = -1;
+			var t_cycle = "";
+			var t_offset = "";
+
+			function checkPrime(a) {
+				for (var i = 2; i < Math.sqrt(a); i++) {
+					if (a % i == 0) {
+						return false;
+					}
+				}
+				return true;
+			}
+
+			function detectCycleOffset(a) {
+				var m = 1;
+				for (var i = 0; i <= a; i++) {
+					m = (b * m) % a;
+					if (m + k == a) {
+						offset = i + 1;
+					}
+					if (m == 1) {
+						cycle = i + 1;
+						return 0;
+					}
+				}
+			}
+
+			function calc() {
+				var t_cycle = "";
+				var t_offset = "";
+				x = document.getElementById("vIn");
+				b = x.elements[0].value;
+				k = x.elements[1].value;
+				maxF = x.elements[2].value;
+
+				var i = 0;
+				var f = 5;
+				while (i < maxF) {
+					if (checkPrime(f) == true) {
+						detectCycleOffset(f);
+						t_cycle = t_cycle + cycle + ",";
+						t_offset = t_offset + offset + ",";
+					}
+					cycle = 0;
+					offset = -1;
+					f += 2;
+					i++;
+				}
+				document.getElementById("t_cycle").innerHTML = t_cycle;
+				document.getElementById("t_offset").innerHTML = t_offset;
+			}
+		</script>
+	</body>
+</html>
